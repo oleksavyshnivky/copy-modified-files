@@ -8,8 +8,18 @@
 
 header('Content-Type: text/plain; charset=utf-8');
 
-// Дата найсвіжішого файлу
-$mostfreshtime = 0;
+// Обмеження давності 
+$timelimit = time() - 86400 * 30; 
+// 
+$toplimit = 10;
+
+//  Масив часів
+$times = [];
+
+function cmp($a, $b) {
+	if ($a['time'] == $b['time']) return 0;
+	return ($a['time'] < $b['time']) ? 1 : -1;
+}
 
 // Конфіг
 include_once 'config.php';
@@ -40,12 +50,14 @@ $iterator = new RecursiveIteratorIterator(
 );
 
 foreach ($iterator as $pathname => $fileInfo) {
-	if (filemtime($pathname) > $mostfreshtime) {
-		$mostfreshtime = filemtime($pathname);
-	} elseif (filectime($pathname) > $mostfreshtime) {
-		$mostfreshtime = filectime($pathname);
-	}
+	if (filemtime($pathname) > $timelimit) $times[] = ['file' => $pathname, 'time' => filemtime($pathname)];
+	elseif (filectime($pathname) > $timelimit) $times[] = ['file' => $pathname, 'time' => filectime($pathname)];
 }
 
-echo date('c', $mostfreshtime), PHP_EOL;
+usort($times, 'cmp');
+$times = array_slice($times, 0, $toplimit);
+
+foreach ($times as $row) {
+	echo date('c', $row['time']), ' — ', $row['file'], PHP_EOL;
+}
 
