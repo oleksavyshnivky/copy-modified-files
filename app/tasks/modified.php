@@ -1,11 +1,9 @@
 <?php
 
-// Копіювання файлів, змінених після вказаної дати (чи дати останнього виконання цього завдання)
-
 // Опорна дата (копіювати файли, змінені після неї)
 $lastdate_txt = checkArgument('lastdate');
 if (!$lastdate_txt) {
-	$dateN = (int)checkArgument('daten');
+	$dateN = (int)checkArgument('date');
 	if ($dateN > 0) {
 		$dates = explode(PHP_EOL, trim(file_get_contents('app/lastdate.txt')));
 		if (isset($dates[$dateN])) $lastdate_txt = $dates[$dateN];
@@ -18,8 +16,7 @@ if (!$lastdate_txt) {
 $lastdate = strtotime($lastdate_txt);
 
 // Нова опорна дата
-$new_lastdate_unix = time();
-$new_lastdate = date('c', $new_lastdate_unix);
+$new_lastdate = date('c');
 
 // Директорія проекту
 $path = realpath($_OLD);
