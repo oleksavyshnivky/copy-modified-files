@@ -10,4 +10,4 @@ $dates = array_slice($dates, 0, $limit);
 
 foreach ($dates as $key => $value) echo $key, "\t", $value, PHP_EOL;
 
-return '';
+return;
