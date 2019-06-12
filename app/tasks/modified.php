@@ -1,5 +1,7 @@
 <?php
 
+// 11
+
 // Опорна дата (копіювати файли, змінені після неї)
 $lastdate_txt = checkArgument('lastdate');
 if (!$lastdate_txt) {
